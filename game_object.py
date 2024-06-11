@@ -13,3 +13,4 @@ class GameObject:
     def update(self):
         self.rect.x = self.x
         self.rect.y = self.y
+

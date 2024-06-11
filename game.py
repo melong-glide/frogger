@@ -2,6 +2,7 @@ import pygame
 from frog import Frog
 from obstacle import Obstacle
 from game_object import GameObject
+from log import Log
 class Game:
     def __init__(self):
         pygame.init()
@@ -17,6 +18,7 @@ class Game:
         self.goal2 = GameObject(300,0,150,150, (255, 255, 0))
         self.goal3 = GameObject(500,0,150,150, (255, 255, 0))
         self.goal4 = GameObject(1000-150,0,150,150, (255, 255, 0))
+        self.log = Log(200,200,100,50,(135, 62, 35), "right", 5)
         self.clock = pygame.time.Clock()
         self.fps = 60
         self.game_loop()
@@ -49,9 +51,11 @@ class Game:
             self.obstacle1.move()
             self.obstacle2.move()
             self.obstacle3.move()
+            self.log.move()
             self.obstacle1.update()
             self.obstacle2.update()
             self.obstacle3.update()
+            self.log.update()
 
             self.draw()
             pygame.display.update()
@@ -60,6 +64,7 @@ class Game:
         self.window.fill((0,0,0))
         self.starting_zone.draw(self.window)
         self.water.draw(self.window)
+        self.log.draw(self.window)
         self.goal1.draw(self.window)
         self.goal2.draw(self.window)
         self.goal3.draw(self.window)
