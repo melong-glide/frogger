@@ -18,7 +18,12 @@ class Game:
         self.goal2 = GameObject(300,0,150,150, (255, 255, 0))
         self.goal3 = GameObject(500,0,150,150, (255, 255, 0))
         self.goal4 = GameObject(1000-150,0,150,150, (255, 255, 0))
-        self.log = Log(200,200,100,50,(135, 62, 35), "right", 5)
+        self.log1 = Log(200,200,200,50,(135, 62, 35), "right", 3)
+        self.log2 = Log(200,250,200,50,(135, 62, 35), "right", 2)
+        self.log3 = Log(200,300,200,50,(135, 62, 35), "right", 5)
+        self.log4 = Log(200,350,200,50,(135, 62, 35), "right", 4)
+        self.log5 = Log(200,400,200,50,(135, 62, 35), "right", 3.4)
+        self.log6 = Log(200,450,200,50,(135, 62, 35), "right", 2.7)
         self.clock = pygame.time.Clock()
         self.fps = 60
         self.game_loop()
@@ -51,12 +56,22 @@ class Game:
             self.obstacle1.move()
             self.obstacle2.move()
             self.obstacle3.move()
-            self.log.move()
+            self.log1.move()
+            self.log2.move()
+            self.log3.move()
+            self.log4.move()
+            self.log5.move()
+            self.log6.move()
             self.obstacle1.update()
             self.obstacle2.update()
             self.obstacle3.update()
-            self.log.update()
-
+            self.check_game_over()
+            self.log1.update()
+            self.log2.update()
+            self.log3.update()
+            self.log4.update()
+            self.log5.update()
+            self.log6.update()
             self.draw()
             pygame.display.update()
 
@@ -64,7 +79,12 @@ class Game:
         self.window.fill((0,0,0))
         self.starting_zone.draw(self.window)
         self.water.draw(self.window)
-        self.log.draw(self.window)
+        self.log1.draw(self.window)
+        self.log2.draw(self.window)
+        self.log3.draw(self.window)
+        self.log4.draw(self.window)
+        self.log5.draw(self.window)
+        self.log6.draw(self.window)
         self.goal1.draw(self.window)
         self.goal2.draw(self.window)
         self.goal3.draw(self.window)
@@ -77,5 +97,13 @@ class Game:
         
 
         pygame.display.update()
+
+    def check_game_over(self):
+        if self.obstacle1.rect.colliderect(self.frog.rect) or self.obstacle2.rect.colliderect(self.frog.rect) or self.obstacle3.rect.colliderect(self.frog.rect):
+            print("game over")
+        elif self.water.rect.colliderect(self.frog.rect) and (not self.log1.rect.colliderect(self.frog.rect) and not self.log2.rect.colliderect(self.frog.rect) and not self.log3.rect.colliderect(self.frog.rect)):
+            print("game over")
+            
+
 
 
