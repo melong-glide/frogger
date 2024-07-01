@@ -3,6 +3,8 @@ from frog import Frog
 from obstacle import Obstacle
 from game_object import GameObject
 from log import Log
+from fly import Fly
+import random
 class Game:
     def __init__(self):
         pygame.init()
@@ -14,10 +16,10 @@ class Game:
         self.starting_zone = GameObject(0, 900, 1000, 100, (125, 117, 114))
         self.safe_zone = GameObject(0, 500, 1000, 100, (125, 117, 114))
         self.water = Obstacle(0,0, 1000, 500, 0, "left", (69, 141, 196))
-        self.goal1 = GameObject(0,0,150,150, (255, 255, 0))
-        self.goal2 = GameObject(300,0,150,150, (255, 255, 0))
-        self.goal3 = GameObject(500,0,150,150, (255, 255, 0))
-        self.goal4 = GameObject(1000-150,0,150,150, (255, 255, 0))
+        self.goal1 = GameObject(0,0,150,200, (255, 255, 0))
+        self.goal2 = GameObject(300,0,150,200, (255, 255, 0))
+        self.goal3 = GameObject(500,0,150,200, (255, 255, 0))
+        self.goal4 = GameObject(1000-150,0,150,200, (255, 255, 0))
         self.log1 = Log(200,200,200,50,(135, 62, 35), "right", 3)
         self.log2 = Log(200,250,200,50,(135, 62, 35), "right", 2)
         self.log3 = Log(200,300,200,50,(135, 62, 35), "right", 5)
@@ -26,6 +28,9 @@ class Game:
         self.log6 = Log(200,450,200,50,(135, 62, 35), "right", 2.7)
         self.clock = pygame.time.Clock()
         self.fps = 60
+        self.death = False
+        self.fly = Fly(4,4, 50, 50, (28, 28, 27))
+        self.goal_positions = []
         self.game_loop()
 
 
@@ -46,6 +51,8 @@ class Game:
                         self.frog.y -= self.frog.speed
                 elif event.key == pygame.K_DOWN or event.key == pygame.K_s:
                     self.frog.y += self.frog.speed
+            if event.type == pygame.MOUSEMOTION:
+                print(event.pos)
     
 
     def game_loop(self):
@@ -72,6 +79,7 @@ class Game:
             self.log4.update()
             self.log5.update()
             self.log6.update()
+            self.check_on_log()
             self.draw()
             pygame.display.update()
 
@@ -100,9 +108,59 @@ class Game:
 
     def check_game_over(self):
         if self.obstacle1.rect.colliderect(self.frog.rect) or self.obstacle2.rect.colliderect(self.frog.rect) or self.obstacle3.rect.colliderect(self.frog.rect):
-            print("game over")
-        elif self.water.rect.colliderect(self.frog.rect) and (not self.log1.rect.colliderect(self.frog.rect) and not self.log2.rect.colliderect(self.frog.rect) and not self.log3.rect.colliderect(self.frog.rect)):
-            print("game over")
+            death = True
+        elif self.water.rect.colliderect(self.frog.rect) and (not self.log1.rect.colliderect(self.frog.rect) and not self.log2.rect.colliderect(self.frog.rect) and not self.log3.rect.colliderect(self.frog.rect)  and not self.log4.rect.colliderect(self.frog.rect)  and not self.log5.rect.colliderect(self.frog.rect) and not self.log6.rect.colliderect(self.frog.rect) and not self.goal1.rect.colliderect(self.frog.rect) and not self.goal2.rect.colliderect(self.frog.rect) and not self.goal3.rect.colliderect(self.frog.rect) and not self.goal4.rect.colliderect(self.frog.rect)):
+            death = True
+        else:
+            death = False
+
+        
+        if death == True:
+            pygame.quit()
+            quit()
+
+    def check_on_log(self):
+        on = False
+        if self.log1.rect.colliderect(self.frog.rect):
+            log_speed = self.log1.speed
+            log_direction = self.log1.direction
+            on = True
+
+        elif self.log2.rect.colliderect(self.frog.rect):
+            log_speed = self.log2.speed
+            log_direction = self.log2.direction
+            on = True
+        elif self.log3.rect.colliderect(self.frog.rect):
+            log_speed = self.log3.speed
+            log_direction = self.log3.direction
+            on = True
+        elif self.log4.rect.colliderect(self.frog.rect):
+            log_speed = self.log4.speed
+            log_direction = self.log4.direction
+            on = True
+        elif self.log5.rect.colliderect(self.frog.rect):
+            log_speed = self.log5.speed
+            log_direction = self.log5.direction
+            on = True
+        elif self.log6.rect.colliderect(self.frog.rect):
+            log_speed = self.log6.speed
+            log_direction = self.log6.direction
+            on = True
+
+        if on == True:
+            if log_direction == "right":
+                self.frog.x += log_speed
+            else:
+                self.frog.x -= log_speed
+
+
+        
+        
+        
+
+        
+            
+
             
 
 
