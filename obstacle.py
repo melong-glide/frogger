@@ -17,5 +17,7 @@ class Obstacle(GameObject):
         elif self.x >= 1000 - self.width:
             self.direction = "left"
 
+            #hihopoipoihhihipiih
+
 
 
