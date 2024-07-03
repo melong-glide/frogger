@@ -3,7 +3,7 @@ class Log(GameObject):
     def __init__(self,x,y,width,height,color,direction,speed):
         super(). __init__(x,y,width,height,color)
         self.direction = direction
-        self.speed = speed
+        self.speed = 1
 
     def move(self):
         if self.direction == "left":
