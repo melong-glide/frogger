@@ -30,7 +30,7 @@ class Game:
         self.fps = 60
         self.death = False
         self.fly = Fly(4,4, 50, 50, (28, 28, 27))
-        self.goal_positions = []
+        self.goal_positions = [(50,50), (150, 50),(200,50), (300,50)]
         self.game_loop()
 
 
@@ -102,6 +102,7 @@ class Game:
         self.obstacle1.draw(self.window)
         self.obstacle2.draw(self.window)
         self.obstacle3.draw(self.window)
+        self.fly.draw(self.window)
         
 
         pygame.display.update()
@@ -153,6 +154,11 @@ class Game:
             else:
                 self.frog.x -= log_speed
 
+    def spawn_fly(self):
+        self.fly_position = random.choice(self.goal_positions)
+        self.fly.x = self.fly_position[0]
+        self.fly.y = self.fly_position[1]
+        self.clock.tick(5000)
 
         
         
