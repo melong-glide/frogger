@@ -5,6 +5,7 @@ from game_object import GameObject
 from log import Log
 from fly import Fly
 import random
+
 class Game:
     def __init__(self):
         pygame.init()
@@ -18,7 +19,7 @@ class Game:
         self.water = Obstacle(0,0, 1000, 500, 0, "left", (69, 141, 196))
         self.goal1 = GameObject(0,0,150,200, (255, 255, 0))
         self.goal2 = GameObject(300,0,150,200, (255, 255, 0))
-        self.goal3 = GameObject(500,0,150,200, (255, 255, 0))
+        self.goal3 = GameObject(600,0,150,200, (255, 255, 0))
         self.goal4 = GameObject(1000-150,0,150,200, (255, 255, 0))
         self.log1 = Log(200,200,200,50,(135, 62, 35), "right", 3)
         self.log2 = Log(200,250,200,50,(135, 62, 35), "right", 2)
@@ -29,8 +30,9 @@ class Game:
         self.clock = pygame.time.Clock()
         self.fps = 60
         self.death = False
-        self.fly = Fly(4,4, 50, 50, (28, 28, 27))
-        self.goal_positions = [(50,50), (350, 50),(550,50), (900,50)]
+        self.fly = Fly(50,50, 50, 50, (28, 28, 27))
+        self.locked_flys = []
+        self.goal_positions = [(50,50), (350, 50),(650,50), (900,50)]
         self.spawn_event  =  pygame.event.custom_type()
         pygame.time.set_timer(self.spawn_event, random.randint(2000, 10000), 1)
         self.game_loop()
@@ -86,6 +88,7 @@ class Game:
             self.log5.update()
             self.log6.update()
             self.check_on_log()
+            self.check_fly()
             self.fly.update()
             self.draw()
             pygame.display.update()
@@ -110,7 +113,8 @@ class Game:
         self.obstacle2.draw(self.window)
         self.obstacle3.draw(self.window)
         self.fly.draw(self.window)
-        
+        for fly in self.locked_flys:
+            fly.draw(self.window)
 
         pygame.display.update()
 
@@ -166,6 +170,15 @@ class Game:
         self.fly.x = self.fly_position[0]
         self.fly.y = self.fly_position[1]
         
+    def check_fly(self):
+        if self.fly.rect.colliderect(self.frog.rect):
+            position = (self.fly.x, self.fly.y)
+            self.goal_positions.remove(position)
+            self.fly.locked = True
+            self.fly.color = (245, 66, 66)
+            self.locked_flys.append(self.fly)
+            self.fly = Fly(50,50, 50, 50, (28, 28, 27))
+            self.spawn_fly()
 
         
         
