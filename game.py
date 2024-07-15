@@ -30,7 +30,9 @@ class Game:
         self.fps = 60
         self.death = False
         self.fly = Fly(4,4, 50, 50, (28, 28, 27))
-        self.goal_positions = [(50,50), (150, 50),(200,50), (300,50)]
+        self.goal_positions = [(50,50), (350, 50),(550,50), (900,50)]
+        self.spawn_event  =  pygame.event.custom_type()
+        pygame.time.set_timer(self.spawn_event, random.randint(2000, 10000), 1)
         self.game_loop()
 
 
@@ -51,6 +53,10 @@ class Game:
                         self.frog.y -= self.frog.speed
                 elif event.key == pygame.K_DOWN or event.key == pygame.K_s:
                     self.frog.y += self.frog.speed
+            if event.type == self.spawn_event:
+                self.spawn_fly()
+                pygame.time.set_timer(self.spawn_event, random.randint(2000, 10000), 1)
+
             if event.type == pygame.MOUSEMOTION:
                 print(event.pos)
     
@@ -80,6 +86,7 @@ class Game:
             self.log5.update()
             self.log6.update()
             self.check_on_log()
+            self.fly.update()
             self.draw()
             pygame.display.update()
 
@@ -158,7 +165,7 @@ class Game:
         self.fly_position = random.choice(self.goal_positions)
         self.fly.x = self.fly_position[0]
         self.fly.y = self.fly_position[1]
-        self.clock.tick(5000)
+        
 
         
         
