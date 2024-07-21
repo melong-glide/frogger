@@ -57,7 +57,10 @@ class Game:
                     self.frog.y += self.frog.speed
             if event.type == self.spawn_event:
                 self.spawn_fly()
-                pygame.time.set_timer(self.spawn_event, random.randint(2000, 10000), 1)
+                pygame.time.set_timer(self.spawn_event, random.randint(2, 10), 1)
+            else:
+                self.win()
+
 
             if event.type == pygame.MOUSEMOTION:
                 print(event.pos)
@@ -179,6 +182,9 @@ class Game:
             self.locked_flys.append(self.fly)
             self.fly = Fly(50,50, 50, 50, (28, 28, 27))
             self.spawn_fly()
+
+    def win(self):
+        print("You won")
 
         
         
